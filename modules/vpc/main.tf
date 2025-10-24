@@ -53,7 +53,6 @@ locals {
   ])
 }
 
-                 
 # Risorsa che crea tutte le subnet
 # Una mappa dalla lista 'local.subnets' con il nome della subnet come chiave e i dati come valore
 
@@ -64,7 +63,7 @@ resource "aws_subnet" "this" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = each.value.cidr
   availability_zone       = each.value.az
-  map_public_ip_on_launch = each.value.is_public
+  map_public_ip_on_launch = each.value.type == "public"
 
   tags = merge(var.tags, {
     Name = "${var.nome_progetto}-subnet-${each.value.type}-${each.value.az}"
