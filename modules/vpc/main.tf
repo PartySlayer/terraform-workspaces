@@ -38,8 +38,8 @@ locals {
     data    = var.private_data_subnet_cidrs
   }
 
-  # Lista piatta da mappa subnets_cidrs
-  # Il nome univoco ("public_0" [..]) sarà la primary key
+  # Lista di subnets per for_each da mappa di subnets_cidrs
+  # Il nome univoco ("public_0" [..]) sarà la key
 
   subnets = flatten([
     for type, cidrs in local.subnet_cidrs : [
@@ -53,3 +53,21 @@ locals {
   ])
 }
 
+                 
+# Risorsa che crea tutte le subnet
+# Una mappa dalla lista 'local.subnets' con il nome della subnet come chiave e i dati come valore
+
+resource "aws_subnet" "this" {
+
+  for_each = { for s in local.subnets : s.key => s }
+
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = each.value.cidr
+  availability_zone       = each.value.az
+  map_public_ip_on_launch = each.value.is_public
+
+  tags = merge(var.tags, {
+    Name = "${var.nome_progetto}-subnet-${each.value.type}-${each.value.az}"
+    Type = "${each.value.type}"
+  })
+}
