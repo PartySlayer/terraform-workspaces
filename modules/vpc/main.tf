@@ -70,3 +70,20 @@ resource "aws_subnet" "this" {
     Type = "${each.value.type}"
   })
 }
+
+#  LOGICA PER LE ROUTE
+
+# Route Table per subnet PUBBLICHE
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.this.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main_ig.id
+  }
+
+  tags = merge(var.tags, {
+    Name = "${var.nome_progetto}-rt-public"
+  })
+}
