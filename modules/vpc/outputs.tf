@@ -5,7 +5,7 @@ output "vpc_id" {
 
 output "vpc_cidr_block" {
   description = "Il CIDR block della VPC."
-  value       = aws_vpc.this.cidr_block
+  value       = aws_vpc.main.cidr_block
 }
 
 output "public_subnet_ids" {
@@ -25,5 +25,5 @@ output "private_data_subnet_ids" {
 
 output "internet_gateway_id" {
   description = "L'ID dell'Internet Gateway."
-  value       = aws_internet_gateway.this.id
+  value       = aws_internet_gateway.main_ig.id
 }
