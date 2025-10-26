@@ -133,19 +133,22 @@ resource "aws_eip" "nat" {
 # Associa le subnet pubbliche alla loro route table
 
 resource "aws_route_table_association" "public" {
-  for_each = { for s in aws_subnet.this : s.key => s if s.tags["Type"] == "public" }
-
+  for_each = { for k, s in aws_subnet.this : k => s if s.tags["Type"] == "public" }
+  
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.public.id
+  route_table_id = aws_route_table.private[tonumber(split("_", each.key)[1])].id
 }
 
 # Associa le subnet private alla loro route table (solo se NAT è abilitato)
 
 resource "aws_route_table_association" "private" {
-  count = var.enable_nat_gateway ? length(var.private_app_subnet_cidrs) : 0
+  for_each = var.enable_nat_gateway ? {
+    for k, s in aws_subnet.this : k => s
+      if s.tags["Type"] == "private"
+  } : tomap({})
   
   # Selezioniamo le subnet private per app e dati in base al loro tag
   
-  subnet_id = [for s in aws_subnet.this : s.id if s.tags["Type"] != "public"][count.index]
-  route_table_id = aws_route_table.private[count.index].id
+  subnet_id = each.value.id
+  route_table_id = aws_route_table.private[tonumber(split("_", each.key)[1])].id
 }
