@@ -43,7 +43,7 @@ variable "tags" {
   description = "Una mappa di tag da applicati a tutte le risorse."
   type        = map(string)
   default = {
-    "Terraform"      = "true"
-    "SourceModule"   = "VPC-Module"
+    "Terraform"    = "true"
+    "SourceModule" = "VPC-Module"
   }
 }

@@ -15,15 +15,15 @@ output "private_app_subnets" {
 
 output "private_data_subnet" {
   description = "Gli ID delle subnet private per i dati."
-  value       = module.vpc.private_data_subnet_ids 
+  value       = module.vpc.private_data_subnet_ids
 }
 
 output "eks_cluster_endpoint" {
   description = "L'endpoint per l'API server di EKS"
-  value = module.eks.cluster_endpoint
+  value       = module.eks.cluster_endpoint
 }
 
 output "eks_cluster_name" {
   description = "Il nome del cluster EKS appena creato"
-  value = module.eks.cluster_name
+  value       = module.eks.cluster_name
 }

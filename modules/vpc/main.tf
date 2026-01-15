@@ -44,10 +44,10 @@ locals {
   subnets = flatten([
     for type, cidrs in local.subnet_cidrs : [
       for i, cidr in cidrs : {
-        key          = "${type}_${i}"
-        type         = type
-        cidr         = cidr
-        az           = data.aws_availability_zones.available.names[i]
+        key  = "${type}_${i}"
+        type = type
+        cidr = cidr
+        az   = data.aws_availability_zones.available.names[i]
       }
     ]
   ])
@@ -134,7 +134,7 @@ resource "aws_eip" "nat" {
 
 resource "aws_route_table_association" "public" {
   for_each = { for k, s in aws_subnet.this : k => s if s.tags["Type"] == "public" }
-  
+
   subnet_id      = each.value.id
   route_table_id = aws_route_table.public.id
 }
@@ -144,11 +144,11 @@ resource "aws_route_table_association" "public" {
 resource "aws_route_table_association" "private" {
   for_each = var.enable_nat_gateway ? {
     for k, s in aws_subnet.this : k => s
-      if s.tags["Type"] == "private"
+    if s.tags["Type"] == "private"
   } : tomap({})
-  
+
   # Selezioniamo le subnet private per app e dati in base al loro tag
-  
-  subnet_id = each.value.id
+
+  subnet_id      = each.value.id
   route_table_id = aws_route_table.private[tonumber(split("_", each.key)[1])].id
 }

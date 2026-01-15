@@ -13,8 +13,8 @@ variable "tags" {
   description = "Una mappa di tag da applicati a tutte le risorse."
   type        = map(string)
   default = {
-    "Terraform"      = "true"
-    "SourceModule"   = "EKS-Module"
+    "Terraform"    = "true"
+    "SourceModule" = "EKS-Module"
   }
 }
 
