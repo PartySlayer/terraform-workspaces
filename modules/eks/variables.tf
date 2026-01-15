@@ -17,3 +17,8 @@ variable "tags" {
     "SourceModule"   = "EKS-Module"
   }
 }
+
+variable "subnet_ids" {
+  description = "Lista degli ID delle subnet per il cluster EKS"
+  type        = list(string)
+}

@@ -1,10 +1,15 @@
 resource "aws_eks_cluster" "main_eks" {
     name = "main_eks_${var.nome_progetto}"
     vpc_config {
-        subnet_ids = [module.vpc.subnet_ids]
+        subnet_ids = var.subnet_ids
       
     }
+    
   role_arn = aws_iam_role.eks_cluster_role.arn
+  
+  depends_on = [
+    aws_iam_role_policy_attachment.eks_cluster_policy
+  ]
 }
 
 # LOGICA IAM ROLE

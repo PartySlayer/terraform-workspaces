@@ -5,7 +5,7 @@ provider "aws" {
 module "vpc" {
   source        = "./modules/vpc"
 
-  nome_progetto = "terraLAB"
+  nome_progetto = var.project_name
   region        = var.aws_region
   vpc_cidr      = "172.20.0.0/16"
 
@@ -16,6 +16,19 @@ module "vpc" {
   enable_nat_gateway = true
 
   tags = {
-    "Environment" = "Sviluppo"
+    "Environment" = var.environment
+  }
+}
+
+module "eks" {
+  source        = "./modules/eks"
+  
+  nome_progetto = var.project_name
+  
+  # Qui passi l'output del modulo VPC alla variabile del modulo EKS
+  subnet_ids    = module.vpc.private_app_subnet_ids 
+  
+  tags = {
+    "Environment" = var.environment
   }
 }
