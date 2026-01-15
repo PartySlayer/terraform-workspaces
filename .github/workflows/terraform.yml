@@ -1,0 +1,57 @@
+name: "Terraform CI - Plan & Simulation"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    
+    # Usa environment se vuoi gestire approvazioni manuali in futuro
+    environment: production 
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # 1. Checkout del codice
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # 2. Configura le credenziali AWS (precedentemente salvate nei Secrets di GitHub)
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
+
+    # 3. Installa Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.14.3
+
+    # 4. Lint o quasi
+    - name: Terraform Format
+      run: terraform fmt -check
+
+    # 5. Inizializzazione
+    - name: Terraform Init
+      run: terraform init
+
+    # 6. Altro lint o quasi
+    - name: Terraform Validate
+      run: terraform validate
+
+    # 7. Plan come ultimo check
+    
+    - name: Terraform Plan
+      run: terraform plan -input=false
