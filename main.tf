@@ -16,7 +16,7 @@ module "vpc" {
   enable_nat_gateway = true
 
   tags = {
-    "Environment" = var.environment
+    "Environment" = terraform.workspace
   }
 }
 
@@ -29,6 +29,6 @@ module "eks" {
   subnet_ids    = module.vpc.private_app_subnet_ids 
   
   tags = {
-    "Environment" = var.environment
+    "Environment" = terraform.workspace
   }
 }

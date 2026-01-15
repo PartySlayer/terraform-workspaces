@@ -9,8 +9,3 @@ variable "project_name" {
   type = string
   default = "terraLAB"
 }
-
-variable "environment" {
-  description = "L'ambiente attribuito alle risorse, per tag e logiche"
-  type = string
-}

@@ -24,5 +24,6 @@ output "eks_cluster_endpoint" {
 }
 
 output "eks_cluster_name" {
+  description = "Il nome del cluster EKS appena creato"
   value = module.eks.cluster_name
 }

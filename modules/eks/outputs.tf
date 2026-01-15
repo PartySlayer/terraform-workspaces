@@ -9,5 +9,6 @@ output "cluster_certificate_authority_data" {
 }
 
 output "cluster_name" {
+    description = "Il nome del cluster EKS appena creato"
   value = aws_eks_cluster.main_eks.name
 }
