@@ -5,7 +5,7 @@ provider "aws" {
 module "vpc" {
   source        = "./modules/vpc"
 
-  nome_progetto = var.project_name
+  nome_progetto = "${var.project_name}-${terraform.workspace}"
   region        = var.aws_region
   vpc_cidr      = "172.20.0.0/16"
 
@@ -23,7 +23,7 @@ module "vpc" {
 module "eks" {
   source        = "./modules/eks"
   
-  nome_progetto = var.project_name
+  nome_progetto = "${var.project_name}-${terraform.workspace}"
   
   # Qui passi l'output del modulo VPC alla variabile del modulo EKS
   subnet_ids    = module.vpc.private_app_subnet_ids 

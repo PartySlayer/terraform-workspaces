@@ -136,7 +136,7 @@ resource "aws_route_table_association" "public" {
   for_each = { for k, s in aws_subnet.this : k => s if s.tags["Type"] == "public" }
   
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.private[tonumber(split("_", each.key)[1])].id
+  route_table_id = aws_route_table.public[tonumber(split("_", each.key)[1])].id
 }
 
 # Associa le subnet private alla loro route table (solo se NAT è abilitato)
