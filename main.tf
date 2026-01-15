@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "terralab-risorse-0x2-tf-state-sviluppo" # bootstrap output
+    key            = "terralab/terraform.tfstate"
+    region         = "eu-west-1"
+    dynamodb_table = "terralab-risorse-0x2-tf-state-sviluppo" # bootstrap output
+    encrypt        = true
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
