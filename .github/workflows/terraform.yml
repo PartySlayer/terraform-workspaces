@@ -6,6 +6,7 @@ on:
   pull_request:
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -13,8 +14,7 @@ jobs:
     name: 'Terraform Plan'
     runs-on: ubuntu-latest
     
-    # Usa environment se vuoi gestire approvazioni manuali in futuro
-    environment: production 
+    environment: development
 
     defaults:
       run:
@@ -29,8 +29,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        role-to-assume: arn:aws:iam::648758970980:role/GitHubActionsDeployRole # output bootstrap
         aws-region: eu-west-1
 
     # 3. Installa Terraform
@@ -52,6 +51,5 @@ jobs:
       run: terraform validate
 
     # 7. Plan come ultimo check
-    
     - name: Terraform Plan
       run: terraform plan -input=false
