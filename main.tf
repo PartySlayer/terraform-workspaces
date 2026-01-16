@@ -6,7 +6,20 @@ terraform {
     dynamodb_table = "terralab-risorse-0x2-tf-locks" # bootstrap output
     encrypt        = true
   }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0" # richiede stetta versione major del provider aws
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.0"
+    }
+  }
+  
+  required_version = ">= 1.5.0" # Richiedi una versione recente di Terraform CLI
 }
+
 
 provider "aws" {
   region = var.aws_region
@@ -51,5 +64,4 @@ module "rds" {
   vpc_cidr      = module.vpc.vpc_cidr_block
   subnet_ids    = module.vpc.private_data_subnet_ids
   
-  db_password   = var.db_password_secret
 }

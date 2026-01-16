@@ -24,12 +24,6 @@ variable "db_username" {
   default     = "postgres"
 }
 
-variable "db_password" {
-  description = "Password master del DB"
-  type        = string
-  sensitive   = true # Nasconde il valore nei log di terraform plan
-}
-
 variable "db_name" {
   description = "Nome del database iniziale"
   type        = string

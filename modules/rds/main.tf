@@ -1,4 +1,32 @@
-# 1. Subnet Group: Dice a RDS quali subnet può usare (quelle "Data")
+# Genera una password random sicura
+resource "random_password" "db_password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+# Crea il segreto in AWS Secrets Manager
+resource "aws_secretsmanager_secret" "rds_credentials" {
+  name        = "${var.project_name}-${terraform.workspace}-db-creds-v1" 
+  description = "Credenziali master per RDS"
+  
+  # forza la cancellazione immediata
+  recovery_window_in_days = 0 
+}
+
+# Inserisce username e password nel segreto
+resource "aws_secretsmanager_secret_version" "rds_credentials_val" {
+  secret_id     = aws_secretsmanager_secret.rds_credentials.id
+  secret_string = jsonencode({
+    username = var.db_username
+    password = random_password.db_password.result
+    engine   = "postgres"
+    host     = aws_db_instance.postgres.address
+  })
+}
+
+
+# Subnet Group: Dice a RDS quali subnet può usare (quelle "Data")
 resource "aws_db_subnet_group" "main" {
   name       = "${var.project_name}-${terraform.workspace}-db-subnet-group"
   subnet_ids = var.subnet_ids
@@ -45,7 +73,7 @@ resource "aws_db_instance" "postgres" {
 
   db_name  = var.db_name
   username = var.db_username
-  password = var.db_password
+  password = random_password.db_password.result
 
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]

@@ -9,9 +9,3 @@ variable "project_name" {
   type        = string
   default     = "terraLAB"
 }
-
-variable "db_password_secret" {
-  description = "Password per il database RDS"
-  type        = string
-  sensitive   = true # nasconde il valore nell'output della console
-}
