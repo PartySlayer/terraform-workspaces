@@ -3,7 +3,7 @@ terraform {
     bucket         = "terralab-risorse-0x2-tf-state-sviluppo" # bootstrap output
     key            = "terralab/terraform.tfstate"
     region         = "eu-west-1"
-    dynamodb_table = "terralab-risorse-0x2-tf-state-sviluppo" # bootstrap output
+    dynamodb_table = "terralab-risorse-0x2-tf-locks" # bootstrap output
     encrypt        = true
   }
 }
