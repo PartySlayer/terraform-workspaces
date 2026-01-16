@@ -103,11 +103,60 @@ resource "aws_iam_role" "github_actions_role" {
   assume_role_policy = data.aws_iam_policy_document.github_trust_policy.json
 }
 
-# Per la demo admin policy, in prod ridurrei al minimo i permessi
-resource "aws_iam_role_policy_attachment" "github_admin" {
-  role       = aws_iam_role.github_actions_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+resource "aws_iam_role_policy" "terraform_permissions" {
+  name = "terraform-deploy-policy"
+  role = aws_iam_role.github_actions_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:DeleteItem"
+        ]
+        Resource = [
+          aws_s3_bucket.terraform_state.arn,
+          "${aws_s3_bucket.terraform_state.arn}/*",
+          aws_dynamodb_table.terraform_locks.arn
+        ]
+      },
+
+      {
+        Effect = "Allow"
+        Action = [
+
+          "ec2:*", 
+
+          "eks:*",
+          
+          "rds:*",
+          
+          "secretsmanager:*",
+          
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:GetRole",
+          "iam:PassRole",       # permette a Terraform di assegnare un ruolo a EKS
+          "iam:TagRole",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:CreatePolicy",
+          "iam:DeletePolicy",
+          "iam:List*"
+        ]
+        Resource = "*" 
+      }
+    ]
+  })
 }
+
 
 output "github_role_arn" {
   value = aws_iam_role.github_actions_role.arn

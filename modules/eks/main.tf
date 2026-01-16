@@ -30,7 +30,7 @@ resource "aws_iam_role" "eks_cluster_role" {
     ]
   })
 
-  tags = var.tags # Applica gli stessi tag se vuoi
+  tags = var.tags 
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
