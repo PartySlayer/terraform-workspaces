@@ -65,3 +65,9 @@ module "rds" {
   subnet_ids   = module.vpc.private_data_subnet_ids
 
 }
+
+# importato per simulazione
+
+resource "aws_s3_bucket" "mio_bucket_importato" {
+  bucket = "s3-creato-a-mano"
+}
