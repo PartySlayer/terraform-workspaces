@@ -9,6 +9,6 @@ variable "project_name" {
 }
 
 variable "environment" {
-  description  = "L'ambiente a cui sono riferite le risorse all'interno dello stato remoto"
-  default      = "sviluppo"
+  description = "L'ambiente a cui sono riferite le risorse all'interno dello stato remoto"
+  default     = "sviluppo"
 }

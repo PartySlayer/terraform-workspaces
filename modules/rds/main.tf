@@ -7,16 +7,16 @@ resource "random_password" "db_password" {
 
 # Crea il segreto in AWS Secrets Manager
 resource "aws_secretsmanager_secret" "rds_credentials" {
-  name        = "${var.project_name}-${terraform.workspace}-db-creds-v1" 
+  name        = "${var.project_name}-${terraform.workspace}-db-creds-v1"
   description = "Credenziali master per RDS"
-  
+
   # forza la cancellazione immediata
-  recovery_window_in_days = 0 
+  recovery_window_in_days = 0
 }
 
 # Inserisce username e password nel segreto
 resource "aws_secretsmanager_secret_version" "rds_credentials_val" {
-  secret_id     = aws_secretsmanager_secret.rds_credentials.id
+  secret_id = aws_secretsmanager_secret.rds_credentials.id
   secret_string = jsonencode({
     username = var.db_username
     password = random_password.db_password.result

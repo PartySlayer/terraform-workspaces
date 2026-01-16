@@ -30,7 +30,7 @@ resource "aws_iam_role" "eks_cluster_role" {
     ]
   })
 
-  tags = var.tags 
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
@@ -46,8 +46,8 @@ resource "aws_iam_role" "eks_nodes" {
 
   assume_role_policy = jsonencode({
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "ec2.amazonaws.com" }
     }]
     Version = "2012-10-17"
@@ -85,8 +85,8 @@ resource "aws_eks_node_group" "main" {
     min_size     = 1
   }
 
-  instance_types = ["t3.medium"] 
-  capacity_type  = "ON_DEMAND"   
+  instance_types = ["t3.medium"]
+  capacity_type  = "ON_DEMAND"
 
   depends_on = [
     aws_iam_role_policy_attachment.eks_worker_node_policy,

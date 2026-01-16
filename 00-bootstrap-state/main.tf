@@ -64,9 +64,9 @@ resource "aws_dynamodb_table" "terraform_locks" {
 # Definisce GitHub come provider OIDC
 
 resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
+
   # Serve per la CA di GitHub.
   # È pubblico e standard per GitHub Actions, copiato così come è.
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "github_trust_policy" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:PartySlayer/*"] 
+      values   = ["repo:PartySlayer/*"]
     }
   }
 }
@@ -132,18 +132,18 @@ resource "aws_iam_role_policy" "terraform_permissions" {
         Effect = "Allow"
         Action = [
 
-          "ec2:*", 
+          "ec2:*",
 
           "eks:*",
-          
+
           "rds:*",
-          
+
           "secretsmanager:*",
-          
+
           "iam:CreateRole",
           "iam:DeleteRole",
           "iam:GetRole",
-          "iam:PassRole",       # permette a Terraform di assegnare un ruolo a EKS
+          "iam:PassRole", # permette a Terraform di assegnare un ruolo a EKS
           "iam:TagRole",
           "iam:AttachRolePolicy",
           "iam:DetachRolePolicy",
@@ -151,7 +151,7 @@ resource "aws_iam_role_policy" "terraform_permissions" {
           "iam:DeletePolicy",
           "iam:List*"
         ]
-        Resource = "*" 
+        Resource = "*"
       }
     ]
   })
@@ -159,6 +159,6 @@ resource "aws_iam_role_policy" "terraform_permissions" {
 
 
 output "github_role_arn" {
-  value = aws_iam_role.github_actions_role.arn
+  value       = aws_iam_role.github_actions_role.arn
   description = "L'ARN da incollare nel file YAML della GitHub Action"
 }
