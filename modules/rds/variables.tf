@@ -11,7 +11,6 @@ variable "vpc_id" {
 variable "vpc_cidr" {
   description = "Il CIDR block principale per la VPC."
   type        = string
-  default     = "10.0.0.0/16"
 }
 
 variable "subnet_ids" {
@@ -40,5 +39,14 @@ variable "db_name" {
 variable "instance_class" {
   description = "Tipo di istanza RDS"
   type        = string
-  default     = "db.t3.micro" # Free tier eligible
+  default     = "db.t3.micro" # Free tier 
+}
+
+variable "tags" {
+  description = "Una mappa di tag da applicati a tutte le risorse."
+  type        = map(string)
+  default = {
+    "Terraform"    = "true"
+    "SourceModule" = "RDS-Module"
+  }
 }

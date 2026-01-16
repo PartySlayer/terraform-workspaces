@@ -27,3 +27,13 @@ output "eks_cluster_name" {
   description = "Il nome del cluster EKS appena creato"
   value       = module.eks.cluster_name
 }
+
+output "rds_endpoint" {
+  description = "L'endpoint per connettersi al database RDS"
+  value       = module.rds.db_endpoint
+}
+
+output "rds_db_name" {
+  description = "Il nome del database creato"
+  value       = module.rds.db_name
+}

@@ -9,4 +9,4 @@ Didattica Terraform. Obiettivi dimostrativi: creare moduli riutilizzabili. gesti
 - [✅] Gestire ambienti diversi come workspaces terraform.
 - [✅] Backend remoto su aws tramite bootstrap.
 - [✅] Aggiunta CI/CD.
-- [] Creare un modulo per un'istanza RDS (PostgreSQL).
+- [✅] Creare un modulo per un'istanza RDS (PostgreSQL).
