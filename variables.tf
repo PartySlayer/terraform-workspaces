@@ -7,5 +7,5 @@ variable "aws_region" {
 variable "project_name" {
   description = "Il nome del progetto"
   type        = string
-  default     = "terraLAB"
+  default     = "terralab"
 }
